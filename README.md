@@ -65,10 +65,37 @@ vagrant@vagrant:~$ sudo apt install packer
 vagrant@vagrant:~$ sudo packer --version
 1.3.4
 
-Ошибка при проверке валидации
-vagrant@vagrant:/packer$ sudo packer validate packer_file.json
-Failed to initialize build 'yandex': builder type not found: yandex
-vagrant@vagrant:/packer$
+Обновил версию Packer через ВПН
+
+При загрузке образа через Packer выдает ошибку
+
+==> Wait completed after 4 seconds 91 milliseconds
+
+==> Some builds didn't complete successfully and had errors:
+--> yandex: Error getting source image for instance creation: client-request-id = 9978ec5e-c617-4031-a809-a4f58cecaaa8 client-trace-id = c6c9e3ae-1471-475c-8351-f205f88a4518 rpc error: code = Unauthenticated desc = iam token create failed: failed to get compute instance service account token from instance metadata service: GET http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token: Get "http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token": dial tcp 169.254.169.254:80: connect: network is unreachable.
+Are you inside compute instance?
+
+В файле packer_file.json (прилагаю) поменял filder_id и subnet_id. Валидацию проходит успешно.
+
+packer_file.json
+
+{
+  "builders": [
+    {
+      "disk_type": "network-nvme",
+      "folder_id": "b1gd90e13r1hhqi7jflu",
+      "image_description": "by packer",
+      "image_family": "centos",
+      "image_name": "centos-7-base",
+      "source_image_family": "centos-7",
+      "ssh_username": "centos",
+      "subnet_id": "enp00q2mrge91art2ked",
+      "type": "yandex",
+      "use_ipv4_nat": true,
+      "zone": "ru-central1-a"
+    }
+  ]
+}
 
 
 
